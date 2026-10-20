@@ -50,3 +50,5 @@ export function generateMockLeads(count = 240, seed = 2026) {
     };
   });
 }
+
+export const MOCK_LEADS = generateMockLeads();
