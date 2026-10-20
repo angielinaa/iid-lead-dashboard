@@ -22,7 +22,7 @@ export default function App() {
     <main className="container">
       <h1>IID Lead Dashboard (prototype)</h1>
       <p className="note">
-        Data contoh (mock), bukan data asli.
+        Data contoh (mock).
         {updatedAt && ` Diperbarui: ${updatedAt.toLocaleString('id-ID')}`}
       </p>
 
