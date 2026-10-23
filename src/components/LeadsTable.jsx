@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { STATUS_LABELS } from '../lib/leads';
+import StatusBadge from './StatusBadge';
 
 const PAGE_SIZE = 15;
 
@@ -9,7 +9,7 @@ export default function LeadsTable({ leads }) {
   const current = Math.min(page, totalPages); // aman jika filter memperkecil data
   const rows = leads.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
 
-  if (leads.length === 0) return <p>Tidak ada lead pada rentang tanggal ini.</p>;
+  if (leads.length === 0) return <p className="empty">Tidak ada lead pada rentang tanggal ini.</p>;
 
   return (
     <>
@@ -24,14 +24,17 @@ export default function LeadsTable({ leads }) {
               <th>Tanggal apply</th>
             </tr>
           </thead>
-          <tbody>
-            {rows.map((l) => (
-              <tr key={l.id}>
-                <td>{l.id}</td>
-                <td>{l.name}</td>
-                <td>{l.lc}</td>
-                <td>{STATUS_LABELS[l.status] ?? l.status}</td>
-                <td>{l.appliedAt}</td>
+          {/* key={current}: tbody dibuat ulang tiap ganti halaman, sehingga animasi fade berulang */}
+          <tbody key={current}>
+            {rows.map((l, i) => (
+              <tr key={l.id} style={{ '--i': i }}>
+                <td data-label="ID">{l.id}</td>
+                <td data-label="Nama">{l.name}</td>
+                <td data-label="LC">{l.lc}</td>
+                <td data-label="Status">
+                  <StatusBadge status={l.status} />
+                </td>
+                <td data-label="Tanggal apply">{l.appliedAt}</td>
               </tr>
             ))}
           </tbody>

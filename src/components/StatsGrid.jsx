@@ -1,22 +1,23 @@
-import { STATUSES, STATUS_LABELS, formatPercent } from '../lib/leads';
+import { STATUSES, STATUS_LABELS } from '../lib/leads';
+import { useCountUp } from '../hooks/useCountUp';
 
-export default function StatsGrid({ counts, total, rate }) {
+function StatCard({ label, value, index, status }) {
+  const animated = useCountUp(value);
+  return (
+    <div className={`card stat${status ? ` s-${status}` : ''}`} style={{ '--i': index }}>
+      <div className="value">{animated}</div>
+      <div className="label">{label}</div>
+    </div>
+  );
+}
+
+export default function StatsGrid({ counts, total }) {
   return (
     <section className="stats" aria-label="Ringkasan lead">
-      <div className="card">
-        <div className="value">{total}</div>
-        <div className="label">Total aplikasi</div>
-      </div>
-      {STATUSES.map((s) => (
-        <div className="card" key={s}>
-          <div className="value">{counts[s]}</div>
-          <div className="label">{STATUS_LABELS[s]}</div>
-        </div>
+      <StatCard label="Total aplikasi" value={total} index={0} />
+      {STATUSES.map((s, i) => (
+        <StatCard key={s} label={STATUS_LABELS[s]} value={counts[s]} index={i + 1} status={s} />
       ))}
-      <div className="card">
-        <div className="value">{formatPercent(rate)}</div>
-        <div className="label">Conversion rate</div>
-      </div>
     </section>
   );
 }

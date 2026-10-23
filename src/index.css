@@ -1,39 +1,213 @@
 :root {
   --red: #e53935;
-  --dark: #8a1018;
   --bg: #fdf3f3;
+  --surface: #ffffff;
   --text: #2b1214;
+  --muted: #7a5a5c;
+  --line: #f0dcdc;
+  --accent: #8a1018;
+  --danger: #c62828;
+  --shadow: 0 1px 2px rgba(60, 10, 14, 0.06), 0 6px 18px rgba(60, 10, 14, 0.08);
+  --radius: 16px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-* { box-sizing: border-box; }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #150b0c;
+    --surface: #221415;
+    --text: #f6e9e9;
+    --muted: #c4a3a5;
+    --line: #3a2426;
+    --accent: #ff8a8f;
+    --danger: #ff6b6b;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 18px rgba(0, 0, 0, 0.35);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
+  -webkit-font-smoothing: antialiased;
 }
-.container { max-width: 1000px; margin: 0 auto; padding: 16px; }
-h1 { color: var(--dark); font-size: 1.4rem; margin: 0 0 4px; }
-.note { font-size: 0.85rem; opacity: 0.75; margin-top: 0; }
-.filter { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin: 16px 0; }
-.filter label { display: flex; flex-direction: column; font-size: 0.85rem; gap: 4px; }
-.filter input { padding: 8px; border: 1px solid #d9b8ba; border-radius: 8px; }
+.container {
+  width: min(1040px, 100% - 32px);
+  margin-inline: auto;
+}
+
+/* ---------- Status colors (dipakai badge, bar, kartu) ---------- */
+.s-applied { --c: #4f8cff; }
+.s-accepted { --c: #9b6bff; }
+.s-approved { --c: #ffb020; }
+.s-realized { --c: #22c55e; }
+.s-finished { --c: #06b6d4; }
+
+/* ---------- Hero ---------- */
+.hero {
+  color: #fff;
+  padding: 44px 0 88px;
+  background: linear-gradient(135deg, #e53935, #8a1018, #c62828);
+  background-size: 200% 200%;
+  animation: drift 14s ease-in-out infinite;
+  border-radius: 0 0 28px 28px;
+}
+.hero .container > * {
+  animation: rise 0.6s var(--ease) backwards;
+}
+.hero .container > :nth-child(2) { animation-delay: 80ms; }
+.hero .container > :nth-child(3) { animation-delay: 160ms; }
+.hero .container > :nth-child(4) { animation-delay: 240ms; }
+.eyebrow { margin: 0; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.85; }
+.hero h1 { margin: 4px 0 8px; font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.1; }
+.subtitle { margin: 0; max-width: 56ch; opacity: 0.95; }
+.pill {
+  display: inline-block; margin-left: 8px; padding: 2px 10px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2); font-size: 0.75rem;
+}
+.updated { margin: 12px 0 0; font-size: 0.8rem; opacity: 0.8; }
+
+main.container { position: relative; margin-top: -48px; padding-bottom: 48px; }
+
+/* ---------- Kartu ---------- */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  /* "backwards": setelah animasi selesai, efek hover tidak tertimpa */
+  animation: rise 0.55s var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+@media (hover: hover) {
+  .card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(60, 10, 14, 0.14); }
+}
+
+/* ---------- Filter ---------- */
+.filter {
+  position: sticky; top: 8px; z-index: 5;
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: end;
+  padding: 14px 16px; margin-bottom: 16px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  animation: rise 0.5s var(--ease) backwards;
+}
+.filter label { display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; color: var(--muted); }
+.filter input {
+  padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--surface); color: var(--text); font: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.filter .error { flex-basis: 100%; margin: 0; }
+
+/* ---------- Tombol ---------- */
 button {
-  padding: 8px 14px; border: 0; border-radius: 8px;
+  font: inherit; padding: 9px 16px; border: 0; border-radius: 10px;
   background: var(--red); color: #fff; cursor: pointer;
+  transition: transform 0.15s var(--ease), box-shadow 0.2s, opacity 0.2s;
 }
-button:disabled { opacity: 0.5; cursor: not-allowed; }
+button:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(229, 57, 53, 0.35); }
+button:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+/* ---------- Statistik ---------- */
 .stats {
-  display: grid;
+  display: grid; gap: 12px; margin-bottom: 16px;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-  margin-bottom: 16px;
 }
-.card { background: #fff; border-radius: 12px; padding: 14px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); }
-.card .value { font-size: 1.6rem; font-weight: 700; color: var(--dark); }
-.card .label { font-size: 0.8rem; opacity: 0.75; }
-.table-wrap { overflow-x: auto; background: #fff; border-radius: 12px; }
-table { width: 100%; border-collapse: collapse; min-width: 520px; }
-th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #f0dcdc; font-size: 0.9rem; }
-.pager { display: flex; gap: 12px; align-items: center; justify-content: center; padding: 12px; }
-.error { color: #b00020; }
-@media (min-width: 720px) { h1 { font-size: 1.8rem; } }
+.stat { border-top: 3px solid var(--c, var(--red)); }
+.stat .value {
+  font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.stat .label { font-size: 0.8rem; color: var(--muted); }
+
+/* ---------- Ring + Funnel ---------- */
+.overview { display: grid; gap: 12px; margin-bottom: 16px; grid-template-columns: 1fr; }
+@media (min-width: 800px) { .overview { grid-template-columns: 280px 1fr; } }
+.ring-card { position: relative; display: grid; place-items: center; }
+.ring { width: 180px; height: 180px; transform: rotate(-90deg); }
+.ring circle { fill: none; stroke-width: 10; }
+.ring-bg { stroke: var(--line); }
+.ring-fg { stroke: var(--red); stroke-linecap: round; transition: stroke-dashoffset 1s var(--ease); }
+.ring-text { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+.ring-text strong { font-size: 1.8rem; color: var(--accent); }
+.ring-text span { font-size: 0.75rem; color: var(--muted); }
+
+.funnel h2 { margin: 0 0 12px; font-size: 1rem; }
+.bar-row { display: grid; grid-template-columns: 76px 1fr 36px; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 0.85rem; }
+.bar-track { height: 10px; overflow: hidden; border-radius: 999px; background: var(--line); }
+.bar-fill {
+  height: 100%; border-radius: 999px; background: var(--c);
+  transform-origin: left; animation: grow 0.9s var(--ease) backwards;
+  transition: width 0.6s var(--ease);
+}
+.bar-num { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* ---------- Tabel ---------- */
+.table-wrap {
+  overflow-x: auto; background: var(--surface); border-radius: var(--radius);
+  box-shadow: var(--shadow); animation: rise 0.55s var(--ease) backwards;
+}
+table { width: 100%; min-width: 520px; border-collapse: collapse; }
+th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
+th { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+tbody tr { animation: fade 0.35s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 25ms); transition: background 0.2s; }
+tbody tr:hover { background: color-mix(in srgb, var(--red) 6%, transparent); }
+.badge {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  font-size: 0.78rem; font-weight: 600; color: var(--c);
+  background: color-mix(in srgb, var(--c) 16%, transparent);
+}
+.pager { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; padding: 16px; }
+.empty { padding: 32px 0; text-align: center; color: var(--muted); }
+.error { color: var(--danger); }
+
+/* ---------- Skeleton loading ---------- */
+.skeleton {
+  min-height: 84px; box-shadow: none; animation: shimmer 1.2s linear infinite;
+  background: linear-gradient(90deg, var(--line) 25%, color-mix(in srgb, var(--line) 40%, var(--surface)) 50%, var(--line) 75%);
+  background-size: 200% 100%;
+}
+.skeleton.tall { min-height: 280px; }
+
+/* ---------- HP: tabel menjadi kartu bertumpuk ---------- */
+@media (max-width: 640px) {
+  table { min-width: 0; }
+  thead { display: none; }
+  tbody tr { display: block; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  td { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; border: 0; }
+  td::before { content: attr(data-label); color: var(--muted); font-size: 0.8rem; }
+  .hero { padding-bottom: 80px; }
+}
+
+/* ---------- Animasi ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes grow { from { transform: scaleX(0); } }
+@keyframes drift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* Hormati pengguna yang mematikan animasi di perangkatnya */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
