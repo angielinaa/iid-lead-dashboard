@@ -208,6 +208,3 @@ The browser never talks to EXPA directly and never sees the API key. The key liv
 - `api/leads.js` is a skeleton and returns `501 Not Implemented`.
 - No authentication yet. Real lead data contains personal information, so access control must be added before showing it publicly.
 
-## License
-
-[CHOOSE A LICENSE OR REMOVE THIS SECTION]
