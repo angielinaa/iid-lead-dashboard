@@ -3,7 +3,7 @@
 A one-page dashboard that shows leads by application date, the number of leads per status, and the conversion rate. It runs on **mock data** (no real personal data) and is built so a future team can connect it to the real EXPA data without rewriting the UI.
 
 - **Live demo:** https://iid-lead-dashboard.vercel.app/
-- **Repository:** [PASTE YOUR GITHUB REPO LINK HERE]
+- **Repository:** https://github.com/angielinaa/iid-lead-dashboard
 - **Author:** Maysa Angelina Ridwan, AIESEC in UMM
 - **Purpose:** Technical task for the Web Development Team Lead application, AIESEC in Indonesia In-house Development (IID) MT 26.2
 
