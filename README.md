@@ -7,7 +7,7 @@ A one-page dashboard that shows leads by application date, the number of leads p
 - **Author:** Maysa Angelina Ridwan, AIESEC in UMM
 - **Purpose:** Technical task for the Web Development Team Lead application, AIESEC in Indonesia In-house Development (IID) MT 26.2
 
-> Screenshot: add an image here, for example `![Dashboard screenshot](docs/screenshot.png)`
+> Screenshot: `![Dashboard screenshot](<img width="1896" height="971" alt="image" src="https://github.com/user-attachments/assets/1756dd1f-eda8-4e0f-9a89-930461a440f1" />)`
 
 ---
 
