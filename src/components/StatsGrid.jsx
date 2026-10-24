@@ -14,7 +14,7 @@ function StatCard({ label, value, index, status }) {
 export default function StatsGrid({ counts, total }) {
   return (
     <section className="stats" aria-label="Ringkasan lead">
-      <StatCard label="Total aplikasi" value={total} index={0} />
+      <StatCard label="Total Applications" value={total} index={0} />
       {STATUSES.map((s, i) => (
         <StatCard key={s} label={STATUS_LABELS[s]} value={counts[s]} index={i + 1} status={s} />
       ))}
